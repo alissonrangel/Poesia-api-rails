@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
   resources :poetries
   resources :users
+
+  get 'me', to: 'users#me'
+
   post 'signin', to: 'users#signin'
   post 'signup', to: 'users#signup'
 

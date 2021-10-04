@@ -1,5 +1,5 @@
 class PoetriesController < AuthorizationController
-  before_action :set_poetry, only: [:show, :update, :destroy]
+  before_action :set_poetry, only: [:show, :destroy]
   before_action :logged_in?, except: [:index, :show, :poetries]
   # GET /poetries
   def index
@@ -11,11 +11,12 @@ class PoetriesController < AuthorizationController
     @poetries = Poetry.all.with_attached_featured_image.order(:id).map do |ad|
       {        
         id: "#{ad.id}",
-        #image: ad.image,        
+        # image: ad.image,        
         title: ad.title,
         body: ad.body,
         user: ad.user.name,
-        featured_image: url_for(ad.featured_image)       
+        featured_image: url_for(ad.featured_image),
+        key: ad.featured_image.key       
       }
     end
 
@@ -24,7 +25,16 @@ class PoetriesController < AuthorizationController
 
   # GET /poetries/1
   def show
-    render json: @poetry
+    poetry = {
+        id: @poetry.id,
+        title: @poetry.title,
+        body: @poetry.body,
+        user_id: @poetry.user.id,
+        user_name: @poetry.user.name,
+        featured_image: @poetry.featured_image,
+        key: @poetry.featured_image.key 
+    }
+    render json: poetry
   end
 
   # POST /poetries
@@ -35,6 +45,7 @@ class PoetriesController < AuthorizationController
 
     if @poetry.save
       puts "dentro do save"
+      puts @poetry  
       render json: @poetry, status: :created, location: @poetry
     else
       puts "fora do save"
@@ -45,9 +56,13 @@ class PoetriesController < AuthorizationController
 
   # PATCH/PUT /poetries/1
   def update
-    if @poetry.update(poetry_params)
+    @poetry = Poetry.find(params[:id])
+    #byebug
+    if @poetry.update(body: params[:body], title: params[:title])
+      puts "Entrou"
       render json: @poetry
     else
+      puts "Não Entrou"
       render json: @poetry.errors, status: :unprocessable_entity
     end
   end
@@ -65,6 +80,6 @@ class PoetriesController < AuthorizationController
 
     # Only allow a list of trusted parameters through.
     def poetry_params
-      params.require(:poetry).permit(:title, :body, :user_id)
+      params.require(:poetry).permit(:title, :body, :featured_image)
     end
 end

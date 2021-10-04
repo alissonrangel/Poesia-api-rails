@@ -1,6 +1,11 @@
 class UsersController < AuthorizationController
   before_action :set_user, only: [:show, :update, :destroy]
-  
+  before_action :logged_in?, only: :me
+
+  def me
+    render json: {me: current_user}
+  end
+
   #Post /signup
   def signup
     @user = User.new(name: params[:name], email: params[:email], password: params[:password])
