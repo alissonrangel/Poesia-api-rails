@@ -1,24 +1,7 @@
-# README
+# Projeto pessoal de site voltado para postagens e visualizações de poesias
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
-
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+## Recursos
+  * Projeto Backend feito com Ruby on Rails
+  * Upload de uma imagem com armazenamento no Google Cloud Storage
+  * Conexão com Projeto Frontend feito com o React
+    [projeto frontend](https://github.com/alissonrangel/Poesia-frontend-reactjs)
