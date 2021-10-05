@@ -8,15 +8,16 @@ class PoetriesController < AuthorizationController
   end
 
   def poetries
-    @poetries = Poetry.all.with_attached_featured_image.order(:id).map do |ad|
+    @poetries = Poetry.all.with_attached_featured_image.order(:id).map do |poetry|
       {        
-        id: "#{ad.id}",
-        # image: ad.image,        
-        title: ad.title,
-        body: ad.body,
-        user: ad.user.name,
-        featured_image: url_for(ad.featured_image),
-        key: ad.featured_image.key       
+        id: "#{poetry.id}",
+        # image: poetry.image,        
+        title: poetry.title,
+        body: poetry.body,
+        user: poetry.user.name,
+        featured_image: url_for(poetry.featured_image),
+        key: poetry.featured_image.key,
+        data_criacao: poetry.created_at.strftime("%d/%m/%Y")
       }
     end
 
@@ -32,7 +33,8 @@ class PoetriesController < AuthorizationController
         user_id: @poetry.user.id,
         user_name: @poetry.user.name,
         featured_image: @poetry.featured_image,
-        key: @poetry.featured_image.key 
+        key: @poetry.featured_image.key, 
+        data_criacao: @poetry.created_at.strftime("%d/%m/%Y")
     }
     render json: poetry
   end
